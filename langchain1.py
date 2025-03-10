@@ -13,7 +13,7 @@ from langchain_openai import OpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_anthropic import ChatAnthropic
 aaa=OpenAI(model_name="gpt-3.5-turbo-instruct")
-google = ChatGoogleGenerativeAI(model="gemini-pro")
+google = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
 claude = ChatAnthropic(model="claude-3-sonnet-20240229", temperature=0)
 deeplt = deepl.Translator(DEEPL_API_KEY)
 
