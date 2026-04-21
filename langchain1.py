@@ -2,18 +2,23 @@ import streamlit as st
 import deepl
 #API 키 저장을 위한 os 라이브러리 호출
 import os
+
 #OPENAI API 키 저장
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
 os.environ["ANTHROPIC_API_KEY"] = st.secrets["ANTHROPIC_API_KEY"]
 DEEPL_API_KEY = st.secrets["DEEPL_API_KEY"]
 
+
 # LLM 모델 설정
 from langchain_openai import OpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_anthropic import ChatAnthropic
 aaa=OpenAI(model="gpt-3.5-turbo-instruct")
-google = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+google = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
+    google_api_key=st.secrets["GOOGLE_API_KEY"]
+)
 claude = ChatAnthropic(model="claude-haiku-4-5-20251001", temperature=0)
 deeplt = deepl.Translator(DEEPL_API_KEY)
 
