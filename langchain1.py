@@ -2,18 +2,23 @@ import streamlit as st
 import deepl
 #API 키 저장을 위한 os 라이브러리 호출
 import os
+
 #OPENAI API 키 저장
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
 os.environ["ANTHROPIC_API_KEY"] = st.secrets["ANTHROPIC_API_KEY"]
 DEEPL_API_KEY = st.secrets["DEEPL_API_KEY"]
 
+
 # LLM 모델 설정
-from langchain_openai import OpenAI
+from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_anthropic import ChatAnthropic
-aaa=OpenAI(model="gpt-3.5-turbo-instruct")
-google = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+aaa = ChatOpenAI(model="gpt-4o-mini")
+google = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
+    google_api_key=st.secrets["GOOGLE_API_KEY"]
+)
 claude = ChatAnthropic(model="claude-haiku-4-5-20251001", temperature=0)
 deeplt = deepl.Translator(DEEPL_API_KEY)
 
@@ -35,7 +40,7 @@ def proofreading(input):
     if isEnglishOrKorean(input) == "한국어":
         req1="I want you to act as a Korean-English translator. \
             Please translate following sentence to English: "+ input
-        answer1=aaa.invoke(req1)
+        answer1=aaa.invoke(req1).content
         st.write("영어 번역\n\n", answer1)
     else:
         answer1 = input
@@ -46,16 +51,16 @@ def proofreading(input):
     academic1="I want you to act as an academic English proofreader. \
         Please proofread following sentences. \
         Please give me only edited sentences without any explanations: "+ answer1
-    aca_basic=aaa.invoke(academic1)
-    st.write("학술 교정 (기본) \n", aca_basic)
+    aca_basic=aaa.invoke(academic1).content
+    st.write("학술 교정 (기본) \n\n", aca_basic)
 
     # 학술 교정 (보다 학술적, ChatGPT)
     st.markdown("---")
     academic_high="I want you to act as an academic English proofreader. \
         Please change following sentences to more proper sentences for academic journals. \
         Please give me only edited sentences without any explanations: "+answer1
-    aca_high=aaa.invoke(academic_high)
-    st.write("학술 교정 (보다 학술적) \n", aca_high)
+    aca_high=aaa.invoke(academic_high).content
+    st.write("학술 교정 (보다 학술적) \n\n", aca_high)
 
     # 학술 교정 (Google)
     st.markdown("---")
