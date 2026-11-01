@@ -19,7 +19,7 @@ google = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash",
     google_api_key=st.secrets["GOOGLE_API_KEY"]
 )
-claude = ChatAnthropic(model="claude-haiku-4-5-20251001", temperature=0)
+claude = ChatAnthropic(model="claude-haiku-4-5-20251001")
 deeplt = deepl.Translator(DEEPL_API_KEY)
 
 st.title("Your Proofreader")
